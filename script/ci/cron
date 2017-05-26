@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -euo pipefail
+source script/ci/common.sh
+
+# TODO: use openssl to verify that the certificate needs renewal
+
+certbot certonly --manual --preferred-challenges=dns \
+  --manual-auth-hook script/certbot/auth.py \
+  --manual-cleanup-hook script/certbot/cleanup.py \
+  -n --agree-tos --manual-public-ip-logging-ok --email "${EMAIL}" \
+  --test-cert \
+  --domain pushbot.party \
+  --domain api.pushbot.party
+
+find /etc/letsencrypt -type f

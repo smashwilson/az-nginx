@@ -1,0 +1,15 @@
+dist: trusty
+sudo: required
+language: python
+python:
+- "3.6"
+services:
+- docker
+before_install: script/ci/before-install
+script: script/ci/test
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: script/ci/deploy
+  on:
+    branch: master

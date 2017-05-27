@@ -9,6 +9,9 @@ RUN ln -s /usr/bin/python3 /usr/bin/python && \
 ADD requirements.txt /python/requirements.txt
 RUN pip install -r /python/requirements.txt
 ADD tls-up.py /python/tls-up.py
+
+ADD script/container/entrypoint.sh /script/container/entrypoint.sh
+
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD vhosts/ /etc/nginx/vhosts/
 ADD pushbot.party/ /var/www/pushbot.party/
@@ -16,4 +19,4 @@ ADD pushbot.party/ /var/www/pushbot.party/
 EXPOSE 80 443
 STOPSIGNAL SIGQUIT
 
-ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT ["/script/container/entrypoint.sh"]

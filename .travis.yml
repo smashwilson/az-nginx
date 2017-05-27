@@ -1,12 +1,9 @@
 dist: trusty
 sudo: required
-language: python
-python:
-- "3.6"
+language: bash
 services:
 - docker
-before_install: script/ci/before-install
-script: script/ci/test
+script: script/ci/build
 deploy:
   provider: script
   skip_cleanup: true

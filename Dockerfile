@@ -2,7 +2,8 @@ FROM alpine:3.6
 LABEL maintainer "Ash Wilson"
 
 RUN apk add --no-cache nginx python3
-RUN mkdir -p /etc/ssl /var/cache/nginx /var/tmp/nginx /var/www/pushbot.party
+RUN mkdir -p /etc/ssl /var/cache/nginx /var/tmp/nginx /run/nginx/ \
+  /var/www/pushbot.party /var/www/azurefire.net
 RUN ln -s /usr/bin/python3 /usr/bin/python && \
   ln -s /usr/bin/pip3 /usr/bin/pip
 

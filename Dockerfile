@@ -13,8 +13,10 @@ ADD tls-up.py /python/tls-up.py
 ADD script/container/entrypoint.sh /script/container/entrypoint.sh
 
 ADD nginx.conf /etc/nginx/nginx.conf
+ADD ssl.conf /etc/nginx/ssl.conf
 ADD vhosts/ /etc/nginx/vhosts/
 ADD pushbot.party/ /var/www/pushbot.party/
+ADD azurefire.net/ /var/www/azurefire.net/
 
 EXPOSE 80 443
 STOPSIGNAL SIGQUIT

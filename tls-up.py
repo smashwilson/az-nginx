@@ -38,7 +38,6 @@ tarball = io.BytesIO(response['Plaintext'])
 
 print('Unpacking tarball.')
 with tarfile.open(name='tls-certificates.tar.gz', fileobj=tarball, mode='r') as tf:
-    tf.list(verbose=True)
     tf.extractall(path='/etc/ssl/')
 
 missing_files = []

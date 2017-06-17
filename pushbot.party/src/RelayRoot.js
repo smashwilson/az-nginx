@@ -42,6 +42,11 @@ const environment = new Environment({
 })
 
 export default class RelayRoot extends Component {
+  constructor (props, context) {
+    super(props, context)
+    this.renderResult = this.renderResult.bind(this)
+  }
+
   render () {
     const query = graphql`
       query RelayRootQuery {
@@ -55,7 +60,7 @@ export default class RelayRoot extends Component {
       <QueryRenderer
         environment={environment}
         query={query}
-        render={this.renderResult.bind(this)} />
+        render={this.renderResult} />
     )
   }
 

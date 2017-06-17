@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
+import './Banner.css'
+
 export default class Banner extends Component {
   static propTypes = {
     username: PropTypes.string,
@@ -12,26 +14,33 @@ export default class Banner extends Component {
     let accountControl = null
 
     if (this.props.username) {
+      let accountElements = []
+      if (this.props.title) {
+        accountElements.push(
+          <span className='pushbot-navbar-title'>{this.props.title}</span>
+        )
+        accountElements.push(
+          <i className='fa fa-circle pushbot-navbar-separator' aria-hidden='true' />
+        )
+      }
+      accountElements.push(
+        <span className='pushbot-navbar-username'>
+          @{this.props.username}
+        </span>
+      )
+
       accountControl = (
         <ul className='nav navbar-nav navbar-right'>
           <li>
             <p className='navbar-text'>
-              {this.props.title &&
-                <span className='navbar-title'>
-                  {this.props.title}
-                </span>}
-              {this.props.title &&
-                <i className='fa fa-circle' aria-hidden='true' />}
-              <span className='navbar-username'>
-                @{this.props.username}
-              </span>
+              {accountElements}
             </p>
           </li>
           <li>
-            <img src={this.props.avatar} />
+            <img className='pushbot-navbar-avatar' src={this.props.avatar} />
           </li>
           <li>
-            <button type='button' className='btn btn-default navbar-btn'>
+            <button type='button' className='btn btn-link navbar-btn pushbot-navbar-logout'>
               <i className='fa fa-sign-out' aria-hidden='true' />
               Log out
             </button>
@@ -47,7 +56,7 @@ export default class Banner extends Component {
             <button type='button' className='navbar-toggle collapsed' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1' aria-expanded='false'>
               <span className='sr-only'>Toggle navigation</span>
             </button>
-            <a className='navbar-brand' href='#'>pushbot party</a>
+            <p className='navbar-brand'>pushbot party</p>
           </div>
 
           <div className='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>

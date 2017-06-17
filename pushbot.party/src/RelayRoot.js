@@ -3,7 +3,7 @@ import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { QueryRenderer, graphql } from 'react-relay'
 
 async function fetchQuery(operation, variables, cacheConfig, uploadables) {
-  const response = await fetch('https://api.pushbot.party/graphql', {
+  const response = await fetch('http://localhost:8080/graphql', {
     method: 'POST',
     headers: {
       'content-type': 'application/json'
@@ -29,21 +29,23 @@ const environment = new Environment({
 
 export default class RelayRoot extends Component {
   render() {
+    const query = graphql`
+      query RelayRootQuery {
+        me {
+          name
+        }
+      }
+    `
+    
     return (
       <QueryRenderer
         environment={environment}
-        query={graphql`
-          query RelayRootQuery {
-            me {
-              name
-            }
-          }
-        `}
-        render={this.inner.bind(this)} />
+        query={query}
+        render={this.renderResult.bind(this)} />
     )
   }
 
-  inner(error, props) {
+  renderResult({error, props}) {
     if (error) {
       return <div>{error.message}</div>
     } else if (props) {

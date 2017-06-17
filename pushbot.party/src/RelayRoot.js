@@ -53,6 +53,16 @@ export default class RelayRoot extends Component {
       query RelayRootQuery {
         me {
           name
+          avatar {
+            image48
+          }
+        }
+
+        title: documents(set: "title") {
+          mine {
+            text
+            found
+          }
         }
       }
     `
@@ -80,10 +90,20 @@ export default class RelayRoot extends Component {
       body = this.renderLoading()
     }
 
+    const username = props && props.me.name
+    const title = props && props.title &&
+      props.title.mine.found && props.title.mine.text
+    const avatar = props && props.me.avatar &&
+      props.me.avatar.image48
+
     return (
       <div>
         <div className='row'>
-          <Banner />
+          <Banner
+            username={username}
+            title={title}
+            avatar={avatar}
+          />
         </div>
         {body}
       </div>
@@ -94,7 +114,7 @@ export default class RelayRoot extends Component {
     return (
       <div className='row'>
         <div className='col-md-2'>
-          Nav here
+          sidenav here
         </div>
         <div className='col-md-8'>
           <pre>{JSON.stringify(props)}</pre>

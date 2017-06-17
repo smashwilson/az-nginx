@@ -4,10 +4,42 @@ import PropTypes from 'prop-types'
 export default class Banner extends Component {
   static propTypes = {
     username: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    avatar: PropTypes.object
   }
 
   render () {
+    let accountControl = null
+
+    if (this.props.username) {
+      accountControl = (
+        <ul className='nav navbar-nav navbar-right'>
+          <li>
+            <p className='navbar-text'>
+              {this.props.title &&
+                <span className='navbar-title'>
+                  {this.props.title}
+                </span>}
+              {this.props.title &&
+                <i className='fa fa-circle' aria-hidden='true' />}
+              <span className='navbar-username'>
+                @{this.props.username}
+              </span>
+            </p>
+          </li>
+          <li>
+            <img src={this.props.avatar} />
+          </li>
+          <li>
+            <button type='button' className='btn btn-default navbar-btn'>
+              <i className='fa fa-sign-out' aria-hidden='true' />
+              Log out
+            </button>
+          </li>
+        </ul>
+      )
+    }
+
     return (
       <nav className='navbar navbar-default'>
         <div className='container-fluid'>
@@ -19,11 +51,7 @@ export default class Banner extends Component {
           </div>
 
           <div className='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
-            <ul className='nav navbar-nav navbar-right'>
-              <button className='btn btn-default navbar-btn'>
-                Sign in
-              </button>
-            </ul>
+            {accountControl}
           </div>
         </div>
       </nav>

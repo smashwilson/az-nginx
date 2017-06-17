@@ -2,8 +2,14 @@ import React, { Component } from 'react'
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { QueryRenderer, graphql } from 'react-relay'
 
+import Login from './Login'
+
+const BASE_URL = 'https://api.pushbot.party'
+const API_URL = `${BASE_URL}/graphql`
+const AUTH_URL = `${BASE_URL}/auth/slack`
+
 async function fetchQuery(operation, variables, cacheConfig, uploadables) {
-  const response = await fetch('https://api.pushbot.party/graphql', {
+  const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
       'content-type': 'application/json'
@@ -15,7 +21,14 @@ async function fetchQuery(operation, variables, cacheConfig, uploadables) {
     })
   })
 
-  return response.json()
+  if (response.ok) {
+    return response.json()
+  } else {
+    const err = new Error(`API server responded with ${response.status}`)
+    err.status = response.status
+    err.text = await response.text()
+    throw err
+  }
 }
 
 const source = new RecordSource()
@@ -47,7 +60,11 @@ export default class RelayRoot extends Component {
 
   renderResult({error, props}) {
     if (error) {
-      return <div>{error.message}</div>
+      if (error.status === 401) {
+        return <Login authUrl={AUTH_URL} />
+      } else {
+        return <div>{error.message}</div>
+      }
     } else if (props) {
       return <div><pre>{JSON.stringify(props)}</pre></div>
     } else {

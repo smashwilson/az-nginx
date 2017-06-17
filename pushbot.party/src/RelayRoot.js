@@ -9,7 +9,7 @@ import Login from './Login'
 const API_URL = `${API_BASE_URL}/graphql`
 const AUTH_URL = `${API_BASE_URL}/auth/slack`
 
-async function fetchQuery(operation, variables, cacheConfig, uploadables) {
+async function fetchQuery (operation, variables, cacheConfig, uploadables) {
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
@@ -42,7 +42,7 @@ const environment = new Environment({
 })
 
 export default class RelayRoot extends Component {
-  render() {
+  render () {
     const query = graphql`
       query RelayRootQuery {
         me {
@@ -50,7 +50,7 @@ export default class RelayRoot extends Component {
         }
       }
     `
-    
+
     return (
       <QueryRenderer
         environment={environment}
@@ -59,7 +59,7 @@ export default class RelayRoot extends Component {
     )
   }
 
-  renderResult({error, props}) {
+  renderResult ({error, props}) {
     if (error) {
       if (error.status === 401) {
         return <Login authUrl={`${AUTH_URL}?backTo=%2F`} />

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 
 import RelayRoot from './RelayRoot'
 
 export default class App extends Component {
-  render() {
+  render () {
     return (
-      <div className="App">
+      <div className='App'>
         <RelayRoot />
       </div>
-    );
+    )
   }
 }

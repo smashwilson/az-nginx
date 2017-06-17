@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 export default class Login extends Component {
+  static propTypes = {
+    authUrl: PropTypes.string.isRequired
+  }
+
   render () {
     return (
       <a href={this.props.authUrl}>

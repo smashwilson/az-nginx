@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-relay": "^1.0.0"
@@ -97,7 +98,11 @@
     ]
   },
   "eslintConfig": {
-    "extends": ["standard", "standard-react"],
+    "parser": "babel-eslint",
+    "extends": [
+      "standard",
+      "standard-react"
+    ],
     "globals": {
       "it": true,
       "fetch": true

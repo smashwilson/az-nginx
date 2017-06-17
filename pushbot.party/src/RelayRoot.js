@@ -62,7 +62,7 @@ export default class RelayRoot extends Component {
   renderResult({error, props}) {
     if (error) {
       if (error.status === 401) {
-        return <Login authUrl={`${AUTH_URL}?restoreTo=%2F`} />
+        return <Login authUrl={`${AUTH_URL}?backTo=%2F`} />
       } else {
         return <div>{error.message}</div>
       }

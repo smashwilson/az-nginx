@@ -3,7 +3,7 @@ import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { QueryRenderer, graphql } from 'react-relay'
 
 async function fetchQuery(operation, variables, cacheConfig, uploadables) {
-  const response = await fetch('http://localhost:8080/graphql', {
+  const response = await fetch('https://api.pushbot.party/graphql', {
     method: 'POST',
     headers: {
       'content-type': 'application/json'

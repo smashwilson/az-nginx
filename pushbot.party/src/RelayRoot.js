@@ -1,12 +1,13 @@
+/* global API_BASE_URL */
+
 import React, { Component } from 'react'
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { QueryRenderer, graphql } from 'react-relay'
 
 import Login from './Login'
 
-const BASE_URL = 'https://api.pushbot.party'
-const API_URL = `${BASE_URL}/graphql`
-const AUTH_URL = `${BASE_URL}/auth/slack`
+const API_URL = `${API_BASE_URL}/graphql`
+const AUTH_URL = `${API_BASE_URL}/auth/slack`
 
 async function fetchQuery(operation, variables, cacheConfig, uploadables) {
   const response = await fetch(API_URL, {

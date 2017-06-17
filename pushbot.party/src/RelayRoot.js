@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { QueryRenderer, graphql } from 'react-relay'
 
+import Banner from './Banner'
 import Login from './Login'
 
 const API_URL = `${API_BASE_URL}/graphql`
@@ -65,16 +66,58 @@ export default class RelayRoot extends Component {
   }
 
   renderResult ({error, props}) {
+    let body = null
+
     if (error) {
       if (error.status === 401) {
-        return <Login authUrl={`${AUTH_URL}?backTo=%2F`} />
+        body = this.renderUnauthenticated()
       } else {
-        return <div>{error.message}</div>
+        body = this.renderError(error)
       }
     } else if (props) {
-      return <div><pre>{JSON.stringify(props)}</pre></div>
+      body = this.renderBody(props)
     } else {
-      return <div>Loading</div>
+      body = this.renderLoading()
     }
+
+    return (
+      <div>
+        <div className='row'>
+          <Banner />
+        </div>
+        {body}
+      </div>
+    )
+  }
+
+  renderBody (props) {
+    return (
+      <div className='row'>
+        <div className='col-md-2'>
+          Nav here
+        </div>
+        <div className='col-md-8'>
+          <pre>{JSON.stringify(props)}</pre>
+        </div>
+      </div>
+    )
+  }
+
+  renderUnauthenticated () {
+    return (
+      <Login authUrl={`${AUTH_URL}?backTo=%2F`} />
+    )
+  }
+
+  renderError (error) {
+    return (
+      <div>{error.message}</div>
+    )
+  }
+
+  renderLoading () {
+    return (
+      <div>Loading</div>
+    )
   }
 }

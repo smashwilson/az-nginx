@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM quay.io/smashwilson/node-watchman:latest
 LABEL maintainer "Ash Wilson"
 
 WORKDIR /usr/src/app

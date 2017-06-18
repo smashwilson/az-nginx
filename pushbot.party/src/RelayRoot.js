@@ -6,6 +6,9 @@ import { QueryRenderer, graphql } from 'react-relay'
 
 import Banner from './Banner'
 import Login from './Login'
+import Authenticated from './Authenticated'
+
+import './RelayRoot.css'
 
 const API_URL = `${API_BASE_URL}/graphql`
 const AUTH_URL = `${API_BASE_URL}/auth/slack`
@@ -80,14 +83,19 @@ export default class RelayRoot extends Component {
 
     if (error) {
       if (error.status === 401) {
-        body = this.renderUnauthenticated()
+        body = <Login authUrl={`${AUTH_URL}?backTo=%2F`} />
       } else {
-        body = this.renderError(error)
+        body = <div>{error.message}</div>
       }
     } else if (props) {
-      body = this.renderBody(props)
+      body = <Authenticated />
     } else {
-      body = this.renderLoading()
+      body = (
+        <div className='pushbot-loading'>
+          <i className='fa fa-circle-o-notch fa-spin' aria-hidden='true' />
+          loading
+        </div>
+      )
     }
 
     const username = props && props.me.name
@@ -107,37 +115,6 @@ export default class RelayRoot extends Component {
         </div>
         {body}
       </div>
-    )
-  }
-
-  renderBody (props) {
-    return (
-      <div className='row'>
-        <div className='col-md-2'>
-          sidenav here
-        </div>
-        <div className='col-md-8'>
-          <pre>{JSON.stringify(props)}</pre>
-        </div>
-      </div>
-    )
-  }
-
-  renderUnauthenticated () {
-    return (
-      <Login authUrl={`${AUTH_URL}?backTo=%2F`} />
-    )
-  }
-
-  renderError (error) {
-    return (
-      <div>{error.message}</div>
-    )
-  }
-
-  renderLoading () {
-    return (
-      <div>Loading</div>
     )
   }
 }

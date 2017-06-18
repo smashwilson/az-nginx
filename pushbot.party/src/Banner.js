@@ -7,7 +7,7 @@ export default class Banner extends Component {
   static propTypes = {
     username: PropTypes.string,
     title: PropTypes.string,
-    avatar: PropTypes.object
+    avatar: PropTypes.string
   }
 
   render () {

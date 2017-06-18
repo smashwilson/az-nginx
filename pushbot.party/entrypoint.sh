@@ -2,8 +2,11 @@
 
 set -eu
 
-printf ".. Linting\n"
+printf "\n.. Linting\n"
 npm run lint
 
-printf ".. Building\n"
+printf "\n.. Invoking Relay compiler\n"
+npm run relay-compiler
+
+printf "\n.. Building\n"
 npm run build

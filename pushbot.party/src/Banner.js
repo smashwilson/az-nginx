@@ -17,14 +17,14 @@ export default class Banner extends Component {
       let accountElements = []
       if (this.props.title) {
         accountElements.push(
-          <span className='pushbot-navbar-title'>{this.props.title}</span>
+          <span key='0' className='pushbot-navbar-title'>{this.props.title}</span>
         )
         accountElements.push(
-          <i className='fa fa-circle pushbot-navbar-separator' aria-hidden='true' />
+          <i key='1' className='fa fa-circle pushbot-navbar-separator' aria-hidden='true' />
         )
       }
       accountElements.push(
-        <span className='pushbot-navbar-username'>
+        <span key='2' className='pushbot-navbar-username'>
           @{this.props.username}
         </span>
       )

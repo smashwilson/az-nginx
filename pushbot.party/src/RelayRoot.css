@@ -1,0 +1,10 @@
+.pushbot-loading {
+  margin-top: 10%;
+  color: #ccc;
+  font-size: 300%;
+  text-align: center;
+}
+
+.pushbot-loading i {
+  margin-right: 20px;
+}

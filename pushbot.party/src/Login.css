@@ -1,0 +1,26 @@
+.pushbot-login-bg {
+  background-image: url('./stairs.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.pushbot-login-bg body {
+  background-color: transparent;
+}
+
+.pushbot-login {
+  opacity: 0.8;
+}
+
+.pushbot-login a.pushbot-signin-slack {
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.pushbot-login a {
+  margin: 0 5px;
+}

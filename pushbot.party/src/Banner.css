@@ -1,0 +1,25 @@
+.pushbot-navbar-title {
+  color: #000;
+  font-variant-caps: small-caps; 
+}
+
+.pushbot-navbar-separator {
+  margin: 0 5px;
+  font-size: 40%;
+  vertical-align: middle;
+}
+
+.pushbot-navbar-username {
+  color: #000;
+}
+
+.pushbot-navbar-avatar {
+  margin: 5px 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.pushbot-navbar-logout i {
+  margin-right: 5px;
+}

@@ -1,7 +1,11 @@
+/* global API_BASE_URL */
+
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 import './Banner.css'
+
+const LOGOUT_URL = `${API_BASE_URL}/logout?backTo=true`
 
 export default class Banner extends Component {
   static propTypes = {
@@ -40,10 +44,10 @@ export default class Banner extends Component {
             <img className='pushbot-navbar-avatar' src={this.props.avatar} />
           </li>
           <li>
-            <button type='button' className='btn btn-link navbar-btn pushbot-navbar-logout'>
+            <a href={LOGOUT_URL} className='btn btn-link navbar-btn pushbot-navbar-logout'>
               <i className='fa fa-sign-out' aria-hidden='true' />
               Log out
-            </button>
+            </a>
           </li>
         </ul>
       )

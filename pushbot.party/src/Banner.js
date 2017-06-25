@@ -44,7 +44,7 @@ export default class Banner extends Component {
             <img className='pushbot-navbar-avatar' src={this.props.avatar} />
           </li>
           <li>
-            <a href={LOGOUT_URL} className='btn btn-link navbar-btn pushbot-navbar-logout'>
+            <a href={LOGOUT_URL} className='pushbot-navbar-logout'>
               <i className='fa fa-sign-out' aria-hidden='true' />
               Log out
             </a>

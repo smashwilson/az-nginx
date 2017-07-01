@@ -16,7 +16,7 @@ export default class App extends Component {
 
   render () {
     const query = graphql`
-      query RelayRootQuery() {
+      query AppQuery {
         me {
           name
           avatar {

@@ -1,0 +1,29 @@
+.pushbot-status {
+  margin-right: 10px;
+  line-height: 100%;
+}
+
+.pushbot-status-active {
+  color: #3c3;
+}
+
+.pushbot-status-inactive {
+  color: #ccc;
+}
+
+.pushbot-person-name {
+  display: inline-block;
+  width: 200px;
+  font-size: 125%;
+  font-family: monospace;
+}
+
+.pushbot-person-title {
+  font-size: 125%;
+  font-variant-caps: small-caps;
+}
+
+.pushbot-person-status-message {
+  font-size: 90%;
+  font-style: italic;
+}

@@ -4,13 +4,15 @@ import PropTypes from 'prop-types'
 
 import {environment} from './Transport'
 
+import './People.css'
+
 class Person extends Component {
   static propTypes = {
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
       presence: PropTypes.string.isRequired,
       avatar: PropTypes.shape({
-        image32: PropTypes.string.isRequired
+        image48: PropTypes.string.isRequired
       }).isRequired,
       status: PropTypes.shape({
         message: PropTypes.string.isRequired
@@ -21,17 +23,25 @@ class Person extends Component {
 
   render () {
     const {name, presence, avatar, status} = this.props.user
-    const avatarURL = avatar.image32
-    const presenceIcon = presence === 'ACTIVE' ? 'fa-dot-circle-o' : 'fa-circle-o'
+    const avatarURL = avatar.image48
+    const presenceIcon = presence === 'ACTIVE'
+      ? 'pushbot-status-active fa-dot-circle-o'
+      : 'pushbot-status-inactive fa-circle-o'
     const {message} = status
 
     return (
-      <div>
-        <i className={`fa ${presenceIcon}`} aria-hidden='true' />
-        <img href={avatarURL} />
-        <p className='name'>{name}</p>
-        <p className='title'>{this.props.title}</p>
-        <p className='status-message'>{message}</p>
+      <div className='pushbot-person row'>
+        <div className='col-xs-1'>
+          <img src={avatarURL} className='img-rounded' />
+        </div>
+        <div className='col-xs-11'>
+          <p>
+            <i className={`fa pushbot-status ${presenceIcon}`} aria-hidden='true' />
+            <span className='pushbot-person-name'>{name}</span>
+            <span className='pushbot-person-title'>{this.props.title}</span>
+          </p>
+          <p className='pushbot-person-status-message'>{message}</p>
+        </div>
       </div>
     )
   }
@@ -52,7 +62,7 @@ export default class People extends Component {
             presence
 
             avatar {
-              image32
+              image48
             }
 
             status {
@@ -91,7 +101,7 @@ export default class People extends Component {
     return (
       <div>
         <h3>Dramatis Personae</h3>
-        <blockquote>
+        <blockquote className='blockquote-reverse'>
           Maybe the <em>real</em> lab was the friends we made along the way.
         </blockquote>
         <ul className='list-group'>

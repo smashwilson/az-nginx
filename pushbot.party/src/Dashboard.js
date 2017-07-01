@@ -8,8 +8,7 @@ export default class Dashboard extends Component {
           <h3 className='panel-title'>Why hello there</h3>
         </div>
         <div className='panel-body'>
-          {"Pretend there's something awesome written here. Also that the" +
-          ' navigation links on the left over there work.'}
+          {"Pretend there's something awesome written here."}
         </div>
       </div>
     )

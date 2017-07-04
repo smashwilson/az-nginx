@@ -30,6 +30,9 @@ export default class SideNav extends Component {
       <ul className='nav nav-pills nav-stacked'>
         <Pill to='/' exact>dashboard</Pill>
         <Pill to='/people'>dramatis personae</Pill>
+        <hr />
+        <Pill to='/quotes'>quotes</Pill>
+        <Pill to='/limericks'>limericks</Pill>
       </ul>
     )
   }

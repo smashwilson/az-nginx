@@ -6,7 +6,7 @@ class Pill extends Component {
   static propTypes = {
     to: PropTypes.string.isRequired,
     exact: PropTypes.bool,
-    children: PropTypes.element.isRequired
+    children: PropTypes.string.isRequired
   }
 
   render () {

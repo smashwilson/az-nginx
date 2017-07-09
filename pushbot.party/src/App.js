@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
 
-import {environment, AUTH_URL} from './Transport'
+import {getEnvironment, AUTH_URL} from './Transport'
 import Banner from './Banner'
 import Login from './Login'
 import Authenticated from './Authenticated'
@@ -12,6 +12,8 @@ export default class App extends Component {
   constructor (props, context) {
     super(props, context)
     this.renderResult = this.renderResult.bind(this)
+
+    this.environment = getEnvironment()
   }
 
   render () {
@@ -35,7 +37,7 @@ export default class App extends Component {
 
     return (
       <QueryRenderer
-        environment={environment}
+        environment={this.environment}
         query={query}
         render={this.renderResult} />
     )

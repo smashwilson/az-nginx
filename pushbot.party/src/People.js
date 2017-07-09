@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
 import PropTypes from 'prop-types'
 
-import {environment} from './Transport'
+import {getEnvironment} from './Transport'
 
 import './People.css'
 
@@ -51,6 +51,8 @@ export default class People extends Component {
   constructor (props, context) {
     super(props, context)
     this.renderResult = this.renderResult.bind(this)
+
+    this.environment = getEnvironment()
   }
 
   render () {
@@ -87,7 +89,7 @@ export default class People extends Component {
 
     return (
       <QueryRenderer
-        environment={environment}
+        environment={this.environment}
         query={query}
         render={this.renderResult} />
     )

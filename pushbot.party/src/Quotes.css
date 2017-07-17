@@ -1,3 +1,11 @@
 .pushbot-quote > p {
   white-space: pre-wrap;
 }
+
+.pushbot-random-quote .well {
+  margin: 15px 0;
+}
+
+.pushbot-random-quote button i {
+  margin-right: 10px;
+}

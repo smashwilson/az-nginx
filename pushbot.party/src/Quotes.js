@@ -95,8 +95,12 @@ class RandomQuote extends Component {
     super(props, context)
 
     this.renderResult = this.renderResult.bind(this)
+    this.another = this.another.bind(this)
 
-    this.environment = getEnvironment()
+    this.lastQuote = null
+    this.state = {
+      environment: getEnvironment()
+    }
   }
 
   render () {
@@ -113,7 +117,7 @@ class RandomQuote extends Component {
 
     return (
       <QueryRenderer
-        environment={this.environment}
+        environment={this.state.environment}
         query={query}
         render={this.renderResult}
       />
@@ -125,11 +129,37 @@ class RandomQuote extends Component {
       return <div>{error.message}</div>
     }
 
-    if (!props) {
+    const quoteText = props
+      ? props.documents.random.text
+      : this.lastQuote
+
+    if (!quoteText) {
       return null
     }
 
-    return <Quote text={props.documents.random.text} />
+    this.lastQuote = quoteText
+
+    return (
+      <div className='pushbot-random-quote'>
+        <div className='well well-sm'>
+          <p>
+            Type a search term above to find specific quotes. In the meantime,
+            enjoy this random quote.
+          </p>
+          <button type='button' className='btn btn-default' onClick={this.another}>
+            <i className='fa fa-refresh' aria-hidden='true' />
+            Another
+          </button>
+        </div>
+        <Quote text={quoteText} />
+      </div>
+    )
+  }
+
+  another () {
+    this.setState({
+      environment: getEnvironment()
+    })
   }
 }
 

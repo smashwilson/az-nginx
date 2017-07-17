@@ -163,25 +163,76 @@ class RandomQuote extends Component {
   }
 }
 
+const CONTAINING = {
+  when (cases) {
+    return cases.containing || cases.default || null
+  },
+
+  label: 'containing'
+}
+
+const BY = {
+  when (cases) {
+    return cases.by || cases.default || null
+  },
+
+  label: 'by'
+}
+
+const ABOUT = {
+  when (cases) {
+    return cases.about || cases.default || null
+  },
+
+  label: 'about'
+}
+
+const modes = [CONTAINING, BY, ABOUT]
+
 export default class Quotes extends Component {
   constructor (props, context) {
     super(props, context)
 
+    this.didChangeMode = this.didChangeMode.bind(this)
     this.didChangeQuery = this.didChangeQuery.bind(this)
+    this.didChangePeople = this.didChangePeople.bind(this)
+
     this.state = {
-      query: ''
+      people: '',
+      query: '',
+      mode: CONTAINING
     }
   }
 
   render () {
+    const showPeople = this.state.mode.when({
+      containing: false,
+      by: true,
+      about: true
+    })
+
     return (
       <div>
-        <form className='form-inline'>
-          <label htmlFor='query'>Search</label>
+        <form className={`pushbot-quote-form form-inline pushbot-mode-${this.state.mode.label}`}>
+          <select className='pushbot-quote-mode form-control' value={this.state.mode.label} onChange={this.didChangeMode}>
+            {modes.map((mode, index) => {
+              return <option key={index} value={mode.label}>{mode.label}</option>
+            })}
+          </select>
+          {showPeople && (
+            <input
+              type='text'
+              className='form-control'
+              id='pushbot-quote-people'
+              placeholder='fenris, iguanaditty'
+              value={this.state.people}
+              onChange={this.didChangePeople}
+            />
+          )}
           <input
             type='text'
             className='form-control'
-            id='query'
+            id='pushbot-quote-query'
             placeholder='"query"'
             value={this.state.query}
             onChange={this.didChangeQuery}
@@ -200,7 +251,16 @@ export default class Quotes extends Component {
     return <QuotePage query={this.state.query} />
   }
 
+  didChangeMode (event) {
+    const mode = modes.find(mode => mode.label === event.target.value)
+    this.setState({mode})
+  }
+
   didChangeQuery (event) {
     this.setState({query: event.target.value})
+  }
+
+  didChangePeople (event) {
+    this.setState({people: event.target.value})
   }
 }

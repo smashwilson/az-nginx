@@ -6,6 +6,32 @@ import {getEnvironment} from './Transport'
 
 import './Quotes.css'
 
+const CONTAINING = {
+  when (cases) {
+    return (cases.containing || cases.default || (() => {}))()
+  },
+
+  label: 'containing'
+}
+
+const BY = {
+  when (cases) {
+    return (cases.by || cases.default || (() => {}))()
+  },
+
+  label: 'by'
+}
+
+const ABOUT = {
+  when (cases) {
+    return (cases.about || cases.default || (() => {}))()
+  },
+
+  label: 'about'
+}
+
+const modes = [CONTAINING, BY, ABOUT]
+
 class Quote extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired
@@ -22,7 +48,9 @@ class Quote extends Component {
 
 class QuotePage extends Component {
   static propTypes = {
-    query: PropTypes.string.isRequired
+    query: PropTypes.string.isRequired,
+    people: PropTypes.arrayOf(PropTypes.string).isRequired,
+    mode: PropTypes.oneOf(modes).isRequired
   }
 
   constructor (props, context) {
@@ -55,8 +83,14 @@ class QuotePage extends Component {
       }
     `
 
+    const criteria = {query: this.props.query}
+    this.props.mode.when({
+      by: () => { criteria.speakers = this.props.people },
+      about: () => { criteria.mentions = this.props.people }
+    })
+
     const variables = {
-      c: {query: this.props.query},
+      c: criteria,
       perPage: 20,
       cursor: null
     }
@@ -95,7 +129,7 @@ class QuotePage extends Component {
 
   renderDocuments (total, documents) {
     const quotes = documents.map(document => {
-      return <Quote key={document.id} text={document.node.text} />
+      return <Quote key={document.node.id} text={document.node.text} />
     })
 
     const more = documents.length < total ? 'the first of' : ''
@@ -187,32 +221,6 @@ class RandomQuote extends Component {
   }
 }
 
-const CONTAINING = {
-  when (cases) {
-    return cases.containing || cases.default || null
-  },
-
-  label: 'containing'
-}
-
-const BY = {
-  when (cases) {
-    return cases.by || cases.default || null
-  },
-
-  label: 'by'
-}
-
-const ABOUT = {
-  when (cases) {
-    return cases.about || cases.default || null
-  },
-
-  label: 'about'
-}
-
-const modes = [CONTAINING, BY, ABOUT]
-
 export default class Quotes extends Component {
   constructor (props, context) {
     super(props, context)
@@ -230,9 +238,9 @@ export default class Quotes extends Component {
 
   render () {
     const showPeople = this.state.mode.when({
-      containing: false,
-      by: true,
-      about: true
+      containing: () => false,
+      by: () => true,
+      about: () => true
     })
 
     return (
@@ -268,11 +276,28 @@ export default class Quotes extends Component {
   }
 
   renderResult () {
-    if (this.state.query.length === 0) {
-      return <RandomQuote />
-    }
+    const people = this.state.people.split(/[,+;]|\s/)
+      .map(person => person.replace(/^@/, ''))
+      .map(person => person.trim())
+      .filter(person => person.length > 0)
 
-    return <QuotePage query={this.state.query} />
+    const noQuery = this.state.mode.when({
+      containing: () => this.state.query.length === 0,
+      by: () => people.length === 0,
+      about: () => people.length === 0
+    })
+
+    if (noQuery) {
+      return <RandomQuote />
+    } else {
+      return (
+        <QuotePage
+          mode={this.state.mode}
+          people={people}
+          query={this.state.query}
+        />
+      )
+    }
   }
 
   didChangeMode (event) {

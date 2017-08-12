@@ -30,6 +30,8 @@ class QuotePage extends Component {
     this.renderResult = this.renderResult.bind(this)
 
     this.environment = getEnvironment()
+
+    this.lastResults = null
   }
 
   render () {
@@ -74,11 +76,24 @@ class QuotePage extends Component {
       return <div>{error.message}</div>
     }
 
-    if (!props) {
-      return null
-    }
+    if (!props && !this.lastResults) {
+      return (
+        <div className='pushbot-loading'>
+          <i className='fa fa-circle-o-notch fa-spin' aria-hidden='true' />
+          performing query
+        </div>
+      )
+    } else if (!props && this.lastResults) {
+      return this.renderDocuments(this.lastResults)
+    } else if (props) {
+      this.lastResults = props.documents.all.edges
 
-    const quotes = props.documents.all.edges.map(document => {
+      return this.renderDocuments(this.lastResults)
+    }
+  }
+
+  renderDocuments (documents) {
+    const quotes = documents.map(document => {
       return <Quote key={document.id} text={document.node.text} />
     })
 

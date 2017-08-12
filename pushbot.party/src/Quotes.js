@@ -84,21 +84,30 @@ class QuotePage extends Component {
         </div>
       )
     } else if (!props && this.lastResults) {
-      return this.renderDocuments(this.lastResults)
+      return this.renderDocuments(this.lastTotal, this.lastResults)
     } else if (props) {
+      this.lastTotal = props.documents.all.pageInfo.count
       this.lastResults = props.documents.all.edges
 
-      return this.renderDocuments(this.lastResults)
+      return this.renderDocuments(this.lastTotal, this.lastResults)
     }
   }
 
-  renderDocuments (documents) {
+  renderDocuments (total, documents) {
     const quotes = documents.map(document => {
       return <Quote key={document.id} text={document.node.text} />
     })
 
+    const more = documents.length < total ? 'the first of' : ''
+    const plural = total === 1 ? `matching quote` : `matching quotes`
+
     return (
       <div className='pushbot-results'>
+        <div className='well well-sm'>
+          <p>
+            Showing {more} <strong>{total}</strong> {plural}.
+          </p>
+        </div>
         {quotes}
       </div>
     )
@@ -161,7 +170,7 @@ class RandomQuote extends Component {
             Type a search term above to find specific quotes. In the meantime,
             enjoy this random quote.
           </p>
-          <button type='button' className='btn btn-default' onClick={this.another}>
+          <button type='button' className='btn btn-sm' onClick={this.another}>
             <i className='fa fa-refresh' aria-hidden='true' />
             Another
           </button>

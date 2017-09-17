@@ -228,16 +228,59 @@ export default class Quotes extends Component {
     this.didChangeMode = this.didChangeMode.bind(this)
     this.didChangeQuery = this.didChangeQuery.bind(this)
     this.didChangePeople = this.didChangePeople.bind(this)
+  }
 
-    this.state = {
-      people: '',
-      query: '',
-      mode: CONTAINING
+  readSearch () {
+    const params = new URLSearchParams(window.location.search)
+
+    let mode = CONTAINING
+    let people = ''
+    if (params.has('by')) {
+      mode = BY
+      people = params.get('by')
+    } else if (params.has('about')) {
+      mode = ABOUT
+      people = params.get('about')
+    }
+
+    return {
+      query: params.get('q') || '',
+      people,
+      mode
     }
   }
 
+  writeSearch (changes) {
+    const previous = this.readSearch()
+    const current = Object.assign(previous, changes)
+
+    const params = new URLSearchParams()
+
+    current.mode.when({
+      by: () => params.set('by', current.people),
+      about: () => params.set('about', current.people)
+    })
+    if (current.query.length) {
+      params.set('q', current.query)
+    }
+
+    const nextSearch = params.toString()
+    const nextURL = window.location.protocol + '//' +
+      window.location.host + window.location.pathname +
+      (nextSearch.length > 0 ? '?' + nextSearch : '') +
+      window.location.hash
+
+    if (history.replaceState) {
+      history.replaceState({}, '', nextURL)
+    } else {
+      window.location.href = nextURL
+    }
+    this.forceUpdate()
+  }
+
   render () {
-    const showPeople = this.state.mode.when({
+    const search = this.readSearch()
+    const showPeople = search.mode.when({
       containing: () => false,
       by: () => true,
       about: () => true
@@ -245,8 +288,8 @@ export default class Quotes extends Component {
 
     return (
       <div>
-        <form className={`pushbot-quote-form form-inline pushbot-mode-${this.state.mode.label}`}>
-          <select className='pushbot-quote-mode form-control' value={this.state.mode.label} onChange={this.didChangeMode}>
+        <form className={`pushbot-quote-form form-inline pushbot-mode-${search.mode.label}`}>
+          <select className='pushbot-quote-mode form-control' value={search.mode.label} onChange={this.didChangeMode}>
             {modes.map((mode, index) => {
               return <option key={index} value={mode.label}>{mode.label}</option>
             })}
@@ -257,7 +300,7 @@ export default class Quotes extends Component {
               className='form-control'
               id='pushbot-quote-people'
               placeholder='fenris, iguanaditty'
-              value={this.state.people}
+              value={search.people}
               onChange={this.didChangePeople}
             />
           )}
@@ -266,23 +309,23 @@ export default class Quotes extends Component {
             className='form-control'
             id='pushbot-quote-query'
             placeholder='"query"'
-            value={this.state.query}
+            value={search.query}
             onChange={this.didChangeQuery}
           />
         </form>
-        {this.renderResult()}
+        {this.renderResult(search)}
       </div>
     )
   }
 
-  renderResult () {
-    const people = this.state.people.split(/[,+;]|\s/)
+  renderResult (search) {
+    const people = search.people.split(/[,+;]|\s/)
       .map(person => person.replace(/^@/, ''))
       .map(person => person.trim())
       .filter(person => person.length > 0)
 
-    const noQuery = this.state.mode.when({
-      containing: () => this.state.query.length === 0,
+    const noQuery = search.mode.when({
+      containing: () => search.query.length === 0,
       by: () => people.length === 0,
       about: () => people.length === 0
     })
@@ -292,9 +335,9 @@ export default class Quotes extends Component {
     } else {
       return (
         <QuotePage
-          mode={this.state.mode}
+          mode={search.mode}
           people={people}
-          query={this.state.query}
+          query={search.query}
         />
       )
     }
@@ -302,14 +345,14 @@ export default class Quotes extends Component {
 
   didChangeMode (event) {
     const mode = modes.find(mode => mode.label === event.target.value)
-    this.setState({mode})
+    this.writeSearch({mode})
   }
 
   didChangeQuery (event) {
-    this.setState({query: event.target.value})
+    this.writeSearch({query: event.target.value})
   }
 
   didChangePeople (event) {
-    this.setState({people: event.target.value})
+    this.writeSearch({people: event.target.value})
   }
 }

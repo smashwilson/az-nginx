@@ -109,7 +109,9 @@
     ],
     "globals": {
       "it": true,
-      "fetch": true
+      "fetch": true,
+      "URLSearchParams": true,
+      "history": true
     }
   }
 }

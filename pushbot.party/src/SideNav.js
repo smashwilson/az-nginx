@@ -32,7 +32,6 @@ export default class SideNav extends Component {
         <Pill to='/people'>dramatis personae</Pill>
         <hr />
         <Pill to='/quotes'>quotes</Pill>
-        <Pill to='/limericks'>limericks</Pill>
       </ul>
     )
   }

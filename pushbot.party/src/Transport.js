@@ -1,9 +1,9 @@
-/* global API_BASE_URL */
+/* global API_BASE_URL, API_AUTH_TYPE */
 
 import {Environment, Network, RecordSource, Store} from 'relay-runtime'
 
 const API_URL = `${API_BASE_URL}/graphql`
-export const AUTH_URL = `${API_BASE_URL}/auth/slack`
+export const AUTH_URL = `${API_BASE_URL}/auth/${API_AUTH_TYPE}`
 
 async function fetchQuery (operation, variables, cacheConfig, uploadables) {
   const response = await fetch(API_URL, {

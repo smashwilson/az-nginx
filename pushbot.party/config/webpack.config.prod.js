@@ -246,7 +246,8 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin({
-      'API_BASE_URL': JSON.stringify('https://api.pushbot.party')
+      'API_BASE_URL': JSON.stringify('https://api.pushbot.party'),
+      'API_AUTH_TYPE': JSON.stringify('slack')
     }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({

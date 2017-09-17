@@ -1,0 +1,31 @@
+.pushbot-quote > p {
+  white-space: pre-wrap;
+}
+
+.pushbot-quote-mode {
+  font-weight: bold;
+}
+
+.pushbot-quote-mode option {
+  font-weight: bold;
+}
+
+#pushbot-quote-people {
+  width: 10em;
+}
+
+#pushbot-quote-query {
+  width: 25em;
+}
+
+.pushbot-mode-containing #pushbot-quote-query {
+  width: 35em;
+}
+
+.pushbot-random-quote .well {
+  margin: 15px 0;
+}
+
+.pushbot-random-quote button i {
+  margin-right: 10px;
+}

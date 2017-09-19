@@ -247,7 +247,10 @@ module.exports = {
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin({
       'API_BASE_URL': JSON.stringify('https://api.pushbot.party'),
-      'API_AUTH_TYPE': JSON.stringify('slack')
+      'API_AUTH_TYPE': JSON.stringify('slack'),
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
     }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({

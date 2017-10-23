@@ -5,6 +5,8 @@ import moment from 'moment'
 
 import {getEnvironment} from './Transport'
 
+import './Recent.css'
+
 const UserPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

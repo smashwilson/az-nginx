@@ -1,0 +1,44 @@
+.pushbot-recent-form > label {
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+.pushbot-history-loaded {
+  border: solid 1px black;
+  border-radius: 2px;
+  margin: 20px 0 20px 0;
+  padding: 5px;
+  overflow-y: scroll;
+  height: 70vh;
+}
+
+.pushbot-line {
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.pushbot-line:hover {
+  background-color: #ccf;
+}
+
+.pushbot-line-avatar {
+  padding: 0 10px 0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+}
+
+.pushbot-line-name {
+  display: inline-block;
+  font-weight: bold;
+  width: 120px;
+  text-align: right;
+}
+
+.pushbot-line-timestamp {
+  font-size: 80%;
+  font-style: italic;
+  color: #999;
+  padding: 0 10px;
+  text-align: right;
+}

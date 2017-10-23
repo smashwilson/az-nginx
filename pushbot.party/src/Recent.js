@@ -232,8 +232,10 @@ export default class Recent extends Component {
       <div className='pushbot-recent'>
         <h3>Recent Chatter</h3>
         <form className='pushbot-recent-form form-inline'>
+          <label htmlFor='pushbot-recent-channel'>Channel</label>
           <select
             className='pushbot-recent-channel form-control'
+            id='pushbot-recent-channel'
             value={displayChannel}
             disabled={!channelNames}
             onChange={this.didChangeChannel}>

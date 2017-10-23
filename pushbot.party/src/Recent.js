@@ -250,6 +250,8 @@ export default class Recent extends Component {
   }
 
   didChangeChannel (event) {
+    this.history = null
+
     this.setState({currentChannel: event.target.value})
   }
 }

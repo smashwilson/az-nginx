@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 import {getEnvironment} from './Transport'
 
@@ -25,6 +26,7 @@ class Line extends Component {
 
   render () {
     const {line} = this.props
+    const ts = moment(parseInt(line.timestamp))
 
     return (
       <p className='pushbot-line'>
@@ -35,7 +37,7 @@ class Line extends Component {
           {line.speaker.name}
         </span>
         <span className='pushbot-line-timestamp'>
-          {line.timestamp}
+          {ts.format('h:mm:ss')}
         </span>
         <span className='pushbot-line-text'>
           {line.text}

@@ -6,6 +6,7 @@ import moment from 'moment'
 import {getEnvironment} from './Transport'
 
 const UserPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   avatar: PropTypes.shape({
     image32: PropTypes.string.isRequired
@@ -21,20 +22,22 @@ const LinePropType = PropTypes.shape({
 
 class Line extends Component {
   static propTypes = {
-    line: LinePropType
+    previous: LinePropType,
+    line: LinePropType.isRequired
   }
 
   render () {
-    const {line} = this.props
+    const {line, previous} = this.props
     const ts = moment(parseInt(line.timestamp))
+    const sameSpeaker = previous && (previous.speaker.id === line.speaker.id)
 
     return (
       <p className='pushbot-line'>
         <span className='pushbot-line-avatar'>
-          <img src={line.speaker.avatar.image32} />
+          {sameSpeaker || <img src={line.speaker.avatar.image32} />}
         </span>
         <span className='pushbot-line-name'>
-          {line.speaker.name}
+          {sameSpeaker || line.speaker.name}
         </span>
         <span className='pushbot-line-timestamp'>
           {ts.format('h:mm:ss')}
@@ -72,9 +75,8 @@ class History extends Component {
     console.log(this.props.lines)
     return (
       <div className='pushbot-history pushbot-history-loaded'>
-        {this.props.lines.map(line => {
-          console.log(line)
-          return <Line key={line.id} line={line} />
+        {this.props.lines.map((line, i) => {
+          return <Line key={line.id} line={line} previous={this.props.lines[i - 1]} />
         })}
       </div>
     )

@@ -55,6 +55,14 @@ class History extends Component {
     lines: PropTypes.arrayOf(LinePropType)
   }
 
+  componentDidMount () {
+    this.bottom && this.bottom.scrollIntoView()
+  }
+
+  componentDidUpdate () {
+    this.bottom.scrollIntoView()
+  }
+
   render () {
     if (this.props.lines === null) {
       return this.renderLoading()
@@ -78,6 +86,7 @@ class History extends Component {
         {this.props.lines.map((line, i) => {
           return <Line key={line.id} line={line} previous={this.props.lines[i - 1]} />
         })}
+        <div ref={element => { this.bottom = element }} />
       </div>
     )
   }

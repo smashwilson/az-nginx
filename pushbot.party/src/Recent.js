@@ -108,6 +108,7 @@ export default class Recent extends Component {
 
     this.renderChannelResult = this.renderChannelResult.bind(this)
     this.renderHistoryResult = this.renderHistoryResult.bind(this)
+    this.refresh = this.refresh.bind(this)
   }
 
   render () {
@@ -245,6 +246,9 @@ export default class Recent extends Component {
               return <option key={name} value={name}>{name}</option>
             })}
           </select>
+          <button className='btn btn-primary pushbot-recent-refresh' onClick={this.refresh} >
+            <i className='fa fa-refresh' aria-hidden /> Refresh
+          </button>
         </form>
         <History lines={history} />
       </div>
@@ -255,5 +259,10 @@ export default class Recent extends Component {
     this.history = null
 
     this.setState({currentChannel: event.target.value})
+  }
+
+  refresh (event) {
+    event.preventDefault()
+    this.setState({environment: getEnvironment()})
   }
 }

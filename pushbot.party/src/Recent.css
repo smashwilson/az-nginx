@@ -3,9 +3,11 @@
   margin-right: 10px;
 }
 
+.pushbot-recent-refresh {
+  float: right;
+}
+
 .pushbot-history-loaded {
-  border: solid 1px black;
-  border-radius: 2px;
   margin: 20px 0 20px 0;
   padding: 5px;
   overflow-y: scroll;

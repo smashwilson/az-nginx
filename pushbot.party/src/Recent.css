@@ -44,3 +44,7 @@
   padding: 0 10px;
   text-align: right;
 }
+
+.pushbot-recent-actions {
+  float: right;
+}

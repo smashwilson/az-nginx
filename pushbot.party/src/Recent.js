@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import {getEnvironment} from './Transport'
+import Role from './Role'
 
 import './Recent.css'
 
@@ -62,7 +63,7 @@ class History extends Component {
   }
 
   componentDidUpdate () {
-    this.bottom.scrollIntoView()
+    this.bottom && this.bottom.scrollIntoView()
   }
 
   render () {
@@ -75,14 +76,14 @@ class History extends Component {
 
   renderLoading () {
     return (
-      <div className='pushbot-history pushbot-history-loading'>
-        Loading
+      <div className='pushbot-history pushbot-loading'>
+        <i className='fa fa-circle-o-notch fa-spin' aria-hidden='true' />
+        loading
       </div>
     )
   }
 
   renderLines () {
-    console.log(this.props.lines)
     return (
       <div className='pushbot-history pushbot-history-loaded'>
         {this.props.lines.map((line, i) => {
@@ -246,11 +247,19 @@ export default class Recent extends Component {
               return <option key={name} value={name}>{name}</option>
             })}
           </select>
-          <button className='btn btn-primary pushbot-recent-refresh' onClick={this.refresh} >
+          <button className='btn btn-default pushbot-recent-refresh' onClick={this.refresh} >
             <i className='fa fa-refresh' aria-hidden /> Refresh
           </button>
         </form>
         <History lines={history} />
+        <div className='btn-group pushbot-recent-actions'>
+          <Role name='quote pontiff'>
+            <button className='btn btn-primary'>Quote</button>
+          </Role>
+          <Role name='poet laureate'>
+            <button className='btn btn-primary'>Limerick</button>
+          </Role>
+        </div>
       </div>
     )
   }

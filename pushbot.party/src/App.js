@@ -19,10 +19,16 @@ export default class App extends Component {
   render () {
     const query = graphql`
       query AppQuery {
-        me {
-          name
-          avatar {
-            image48
+        users {
+          me {
+            id
+            name
+            avatar {
+              image48
+            }
+            roles {
+              name
+            }
           }
         }
 
@@ -54,7 +60,9 @@ export default class App extends Component {
         body = <div>{error.message}</div>
       }
     } else if (props) {
-      body = <Authenticated />
+      const user = props.users.me
+
+      body = <Authenticated user={user} />
     } else {
       body = (
         <div className='pushbot-loading'>
@@ -64,11 +72,11 @@ export default class App extends Component {
       )
     }
 
-    const username = props && props.me.name
+    const username = props && props.users.me.name
     const title = props && props.title &&
       props.title.mine.found && props.title.mine.text
-    const avatar = props && props.me.avatar &&
-      props.me.avatar.image48
+    const avatar = props && props.users.me.avatar &&
+      props.users.me.avatar.image48
 
     return (
       <div className='container-fluid'>

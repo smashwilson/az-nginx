@@ -7,7 +7,21 @@ import People from './People.js'
 import Quotes from './Quotes.js'
 import Recent from './Recent.js'
 
+import {UserPropType} from './Role'
+
 export default class Authenticated extends Component {
+  static propTypes = {
+    user: UserPropType
+  }
+
+  static childContextTypes = {
+    user: UserPropType
+  }
+
+  getChildContext () {
+    return {user: this.props.user}
+  }
+
   render () {
     return (
       <Router>

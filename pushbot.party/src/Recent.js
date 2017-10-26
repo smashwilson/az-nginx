@@ -32,6 +32,12 @@ class Selection {
 
   onDidChange (cb) {
     this.subs.push(cb)
+    return {
+      dispose: () => {
+        const index = this.subs.indexOf(cb)
+        this.subs.splice(index, 1)
+      }
+    }
   }
 
   didChange () {
@@ -73,6 +79,20 @@ class Selection {
 
   getLineIDs () {
     return Array.from(this.ids)
+  }
+
+  isEmpty () {
+    return this.ids.size === 0
+  }
+
+  describe () {
+    if (this.ids.size === 0) {
+      return 'nothing selected'
+    } else if (this.ids.size === 1) {
+      return '1 line selected'
+    } else {
+      return `${this.ids.size} lines selected`
+    }
   }
 }
 
@@ -201,6 +221,57 @@ class History extends Component {
   }
 }
 
+class ActionBar extends Component {
+  static propTypes = {
+    selection: PropTypes.instanceOf(Selection).isRequired
+  }
+
+  constructor (props, context) {
+    super(props, context)
+
+    this.didClear = this.didClear.bind(this)
+  }
+
+  componentDidMount () {
+    this.sub = this.props.selection.onDidChange(() => this.forceUpdate())
+  }
+
+  componentWillUnmount () {
+    this.sub.dispose()
+  }
+
+  render () {
+    const textClassNames = ['text-muted']
+    let clearBtn = null
+    if (!this.props.selection.isEmpty()) {
+      clearBtn = <button className='btn btn-link' onClick={this.didClear}>clear</button>
+    } else {
+      textClassNames.push('pushbot-empty')
+    }
+
+    return (
+      <div className='pushbot-recent-actions'>
+        <p className={textClassNames.join(' ')}>
+          {this.props.selection.describe()}
+          {clearBtn}
+        </p>
+        <div className='btn-group pushbot-recent-actions'>
+          <Role name='quote pontiff'>
+            <button className='btn btn-primary'>Quote</button>
+          </Role>
+          <Role name='poet laureate'>
+            <button className='btn btn-primary'>Limerick</button>
+          </Role>
+        </div>
+      </div>
+    )
+  }
+
+  didClear () {
+    this.props.selection.clear()
+  }
+}
+
 export default class Recent extends Component {
   constructor (props, context) {
     super(props, context)
@@ -217,10 +288,6 @@ export default class Recent extends Component {
     this.renderChannelResult = this.renderChannelResult.bind(this)
     this.renderHistoryResult = this.renderHistoryResult.bind(this)
     this.refresh = this.refresh.bind(this)
-  }
-
-  componentDidMount () {
-    this.state.selection.onDidChange(() => this.forceUpdate())
   }
 
   render () {
@@ -363,14 +430,7 @@ export default class Recent extends Component {
           </button>
         </form>
         <History lines={history} selection={this.state.selection} />
-        <div className='btn-group pushbot-recent-actions'>
-          <Role name='quote pontiff'>
-            <button className='btn btn-primary'>Quote</button>
-          </Role>
-          <Role name='poet laureate'>
-            <button className='btn btn-primary'>Limerick</button>
-          </Role>
-        </div>
+        <ActionBar selection={this.state.selection} />
       </div>
     )
   }

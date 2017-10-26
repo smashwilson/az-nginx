@@ -1,0 +1,70 @@
+.pushbot-recent-form > label {
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+.pushbot-recent-refresh {
+  float: right;
+}
+
+.pushbot-history-loaded {
+  margin: 20px 0 20px 0;
+  padding: 5px;
+  overflow-y: scroll;
+  height: 70vh;
+}
+
+.pushbot-line {
+  margin-bottom: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pushbot-line-selected {
+  background-color: #ccf;
+}
+
+.pushbot-speaker-banner {
+  margin: 0 0 5px 5px;
+}
+
+.pushbot-line-avatar {
+  margin: 2px;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+}
+
+.pushbot-line-name {
+  display: inline-block;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.pushbot-line-name::before {
+  content: '@';
+  color: #999;
+  padding-right: 2px;
+}
+
+.pushbot-line-timestamp {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 80%;
+  color: #999;
+  padding: 0 10px;
+  width: 70px;
+}
+
+.pushbot-recent-actions {
+  float: right;
+}
+
+.pushbot-recent-actions p {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.pushbot-recent-actions p.pushbot-empty {
+  padding: 9px 13px;
+}

@@ -255,10 +255,12 @@ class ActionBar extends Component {
   render () {
     const textClassNames = ['text-muted']
     let clearBtn = null
-    if (!this.props.selection.isEmpty()) {
-      clearBtn = <button className='btn btn-link' onClick={this.didClear}>clear</button>
-    } else {
+    let disable = true
+    if (this.props.selection.isEmpty()) {
       textClassNames.push('pushbot-empty')
+    } else {
+      disable = false
+      clearBtn = <button className='btn btn-link' onClick={this.didClear}>clear</button>
     }
 
     return (
@@ -269,10 +271,10 @@ class ActionBar extends Component {
         </p>
         <div className='btn-group pushbot-recent-actions'>
           <Role name='quote pontiff'>
-            <button className='btn btn-primary'>Quote</button>
+            <button className='btn btn-primary' disabled={disable}>Quote</button>
           </Role>
           <Role name='poet laureate'>
-            <button className='btn btn-primary'>Limerick</button>
+            <button className='btn btn-primary' disabled={disable}>Limerick</button>
           </Role>
         </div>
       </div>

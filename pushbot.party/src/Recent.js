@@ -145,7 +145,7 @@ class Line extends Component {
     }
 
     return (
-      <p className={lineClasses.join(' ')} onMouseDown={this.didMouseDown} onMouseMove={this.didMouseMove}>
+      <div className={lineClasses.join(' ')} onMouseDown={this.didMouseDown} onMouseMove={this.didMouseMove}>
         {speakerBanner}
         <span className='pushbot-line-timestamp'>
           {ts.format('h:mm:ss')}
@@ -153,7 +153,7 @@ class Line extends Component {
         <span className='pushbot-line-text'>
           {line.text}
         </span>
-      </p>
+      </div>
     )
   }
 

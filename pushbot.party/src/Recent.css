@@ -19,7 +19,7 @@
   cursor: pointer;
 }
 
-.pushbot-line:hover {
+.pushbot-line-selected {
   background-color: #ccf;
 }
 

@@ -23,10 +23,71 @@ const LinePropType = PropTypes.shape({
   text: PropTypes.string.isRequired
 })
 
+class Selection {
+  constructor () {
+    this.ids = new Set()
+    this.isSelecting = false
+    this.subs = []
+  }
+
+  onDidChange (cb) {
+    this.subs.push(cb)
+  }
+
+  didChange () {
+    for (const sub of this.subs) {
+      sub()
+    }
+  }
+
+  isSelected (line) {
+    return this.ids.has(line.id)
+  }
+
+  select (line) {
+    const wasSelected = this.ids.has(line.id)
+    this.ids.add(line.id)
+    if (!wasSelected) this.didChange()
+    return !wasSelected
+  }
+
+  startSelecting () {
+    this.isSelecting = true
+  }
+
+  stopSelecting () {
+    this.isSelecting = false
+  }
+
+  toggle (line) {
+    if (!this.ids.delete(line.id)) {
+      this.ids.add(line.id)
+    }
+    this.didChange()
+  }
+
+  clear () {
+    this.ids.clear()
+    this.didChange()
+  }
+
+  getLineIDs () {
+    return Array.from(this.ids)
+  }
+}
+
 class Line extends Component {
   static propTypes = {
     previous: LinePropType,
-    line: LinePropType.isRequired
+    line: LinePropType.isRequired,
+    selection: PropTypes.instanceOf(Selection).isRequired
+  }
+
+  constructor (props, context) {
+    super(props, context)
+
+    this.didMouseDown = this.didMouseDown.bind(this)
+    this.didMouseMove = this.didMouseMove.bind(this)
   }
 
   render () {
@@ -34,8 +95,11 @@ class Line extends Component {
     const ts = moment(parseInt(line.timestamp))
     const sameSpeaker = previous && (previous.speaker.id === line.speaker.id)
 
+    const lineClasses = ['pushbot-line']
+    if (this.props.selection.isSelected(line)) lineClasses.push('pushbot-line-selected')
+
     return (
-      <p className='pushbot-line'>
+      <p className={lineClasses.join(' ')} onMouseDown={this.didMouseDown} onMouseMove={this.didMouseMove}>
         <span className='pushbot-line-avatar'>
           {sameSpeaker || <img src={line.speaker.avatar.image32} />}
         </span>
@@ -51,19 +115,50 @@ class Line extends Component {
       </p>
     )
   }
+
+  didMouseDown (event) {
+    if (event.button !== 0) return
+
+    event.preventDefault()
+    this.props.selection.toggle(this.props.line)
+    this.props.selection.startSelecting()
+    this.forceUpdate()
+  }
+
+  didMouseMove (event) {
+    if (!this.props.selection.isSelecting) return
+
+    event.preventDefault()
+    if (this.props.selection.select(this.props.line)) {
+      this.forceUpdate()
+    }
+  }
 }
 
 class History extends Component {
   static propTypes = {
-    lines: PropTypes.arrayOf(LinePropType)
+    lines: PropTypes.arrayOf(LinePropType),
+    selection: PropTypes.instanceOf(Selection).isRequired
+  }
+
+  constructor (props, context) {
+    super(props, context)
+
+    this.didMouseUp = this.didMouseUp.bind(this)
   }
 
   componentDidMount () {
+    window.addEventListener('mouseup', this.didMouseUp)
+
     this.bottom && this.bottom.scrollIntoView()
   }
 
   componentDidUpdate () {
     this.bottom && this.bottom.scrollIntoView()
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('mouseup', this.didMouseUp)
   }
 
   render () {
@@ -85,13 +180,24 @@ class History extends Component {
 
   renderLines () {
     return (
-      <div className='pushbot-history pushbot-history-loaded'>
+      <div className='pushbot-history pushbot-history-loaded' onMouseOut={this.didMouseOut}>
         {this.props.lines.map((line, i) => {
-          return <Line key={line.id} line={line} previous={this.props.lines[i - 1]} />
+          return (
+            <Line
+              key={line.id}
+              line={line}
+              previous={this.props.lines[i - 1]}
+              selection={this.props.selection}
+            />
+          )
         })}
         <div ref={element => { this.bottom = element }} />
       </div>
     )
+  }
+
+  didMouseUp () {
+    this.props.selection.stopSelecting()
   }
 }
 
@@ -104,12 +210,17 @@ export default class Recent extends Component {
 
     this.state = {
       environment: getEnvironment(),
-      currentChannel: null
+      currentChannel: null,
+      selection: new Selection()
     }
 
     this.renderChannelResult = this.renderChannelResult.bind(this)
     this.renderHistoryResult = this.renderHistoryResult.bind(this)
     this.refresh = this.refresh.bind(this)
+  }
+
+  componentDidMount () {
+    this.state.selection.onDidChange(() => this.forceUpdate())
   }
 
   render () {
@@ -251,7 +362,7 @@ export default class Recent extends Component {
             <i className='fa fa-refresh' aria-hidden /> Refresh
           </button>
         </form>
-        <History lines={history} />
+        <History lines={history} selection={this.state.selection} />
         <div className='btn-group pushbot-recent-actions'>
           <Role name='quote pontiff'>
             <button className='btn btn-primary'>Quote</button>
@@ -266,7 +377,7 @@ export default class Recent extends Component {
 
   didChangeChannel (event) {
     this.history = null
-
+    this.selection.clear()
     this.setState({currentChannel: event.target.value})
   }
 

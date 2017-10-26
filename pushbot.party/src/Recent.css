@@ -48,3 +48,12 @@
 .pushbot-recent-actions {
   float: right;
 }
+
+.pushbot-recent-actions p {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.pushbot-recent-actions p.pushbot-empty {
+  padding: 9px 13px;
+}

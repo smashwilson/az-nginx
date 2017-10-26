@@ -17,14 +17,19 @@
 .pushbot-line {
   margin-bottom: 2px;
   cursor: pointer;
+  user-select: none;
 }
 
 .pushbot-line-selected {
   background-color: #ccf;
 }
 
+.pushbot-speaker-banner {
+  margin: 0 0 5px 5px;
+}
+
 .pushbot-line-avatar {
-  padding: 0 10px 0 0;
+  margin: 2px;
   width: 32px;
   height: 32px;
   display: inline-block;
@@ -33,16 +38,22 @@
 .pushbot-line-name {
   display: inline-block;
   font-weight: bold;
-  width: 120px;
-  text-align: right;
+  margin-left: 10px;
+}
+
+.pushbot-line-name::before {
+  content: '@';
+  color: #999;
+  padding-right: 2px;
 }
 
 .pushbot-line-timestamp {
+  display: inline-block;
+  font-family: monospace;
   font-size: 80%;
-  font-style: italic;
   color: #999;
   padding: 0 10px;
-  text-align: right;
+  width: 70px;
 }
 
 .pushbot-recent-actions {

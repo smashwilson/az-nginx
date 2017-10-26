@@ -130,14 +130,23 @@ class Line extends Component {
     const lineClasses = ['pushbot-line']
     if (this.props.selection.isSelected(line)) lineClasses.push('pushbot-line-selected')
 
+    let speakerBanner = null
+    if (!sameSpeaker) {
+      speakerBanner = (
+        <div className='pushbot-speaker-banner'>
+          <span className='pushbot-line-avatar'>
+            <img src={line.speaker.avatar.image32} />
+          </span>
+          <span className='pushbot-line-name'>
+            {line.speaker.name}
+          </span>
+        </div>
+      )
+    }
+
     return (
       <p className={lineClasses.join(' ')} onMouseDown={this.didMouseDown} onMouseMove={this.didMouseMove}>
-        <span className='pushbot-line-avatar'>
-          {sameSpeaker || <img src={line.speaker.avatar.image32} />}
-        </span>
-        <span className='pushbot-line-name'>
-          {sameSpeaker || line.speaker.name}
-        </span>
+        {speakerBanner}
         <span className='pushbot-line-timestamp'>
           {ts.format('h:mm:ss')}
         </span>

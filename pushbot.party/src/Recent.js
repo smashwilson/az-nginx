@@ -311,6 +311,7 @@ export default class Recent extends Component {
     this.renderChannelResult = this.renderChannelResult.bind(this)
     this.renderHistoryResult = this.renderHistoryResult.bind(this)
     this.refresh = this.refresh.bind(this)
+    this.didChangeChannel = this.didChangeChannel.bind(this)
   }
 
   render () {
@@ -460,7 +461,7 @@ export default class Recent extends Component {
 
   didChangeChannel (event) {
     this.history = null
-    this.selection.clear()
+    this.state.selection.clear()
     this.setState({currentChannel: event.target.value})
   }
 

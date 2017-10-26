@@ -24,6 +24,8 @@ const LinePropType = PropTypes.shape({
 })
 
 class Selection {
+  static ALL = Symbol('all')
+
   constructor () {
     this.ids = new Set()
     this.isSelecting = false
@@ -40,9 +42,9 @@ class Selection {
     }
   }
 
-  didChange () {
+  didChange (payload) {
     for (const sub of this.subs) {
-      sub()
+      sub(payload)
     }
   }
 
@@ -53,7 +55,7 @@ class Selection {
   select (line) {
     const wasSelected = this.ids.has(line.id)
     this.ids.add(line.id)
-    if (!wasSelected) this.didChange()
+    if (!wasSelected) this.didChange(line)
     return !wasSelected
   }
 
@@ -69,12 +71,12 @@ class Selection {
     if (!this.ids.delete(line.id)) {
       this.ids.add(line.id)
     }
-    this.didChange()
+    this.didChange(line)
   }
 
   clear () {
     this.ids.clear()
-    this.didChange()
+    this.didChange(Selection.ALL)
   }
 
   getLineIDs () {
@@ -108,6 +110,16 @@ class Line extends Component {
 
     this.didMouseDown = this.didMouseDown.bind(this)
     this.didMouseMove = this.didMouseMove.bind(this)
+  }
+
+  componentDidMount () {
+    this.sub = this.props.selection.onDidChange(kind => {
+      if (kind === Selection.ALL) this.forceUpdate()
+    })
+  }
+
+  componentWillUnmount () {
+    this.sub && this.sub.dispose()
   }
 
   render () {
@@ -237,7 +249,7 @@ class ActionBar extends Component {
   }
 
   componentWillUnmount () {
-    this.sub.dispose()
+    this.sub && this.sub.dispose()
   }
 
   render () {

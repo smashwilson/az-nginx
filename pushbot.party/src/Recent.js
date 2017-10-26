@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {QueryRenderer, graphql} from 'react-relay'
+import {QueryRenderer, graphql, commitMutation} from 'react-relay'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
@@ -244,6 +244,8 @@ class History extends Component {
 
 class ActionBar extends Component {
   static propTypes = {
+    environment: PropTypes.object.isRequired,
+    channel: PropTypes.string,
     selection: PropTypes.instanceOf(Selection).isRequired
   }
 
@@ -251,6 +253,8 @@ class ActionBar extends Component {
     super(props, context)
 
     this.didClear = this.didClear.bind(this)
+    this.didSubmitQuote = this.submit.bind(this, 'quote')
+    this.didSubmitLim = this.submit.bind(this, 'lim')
   }
 
   componentDidMount () {
@@ -280,10 +284,14 @@ class ActionBar extends Component {
         </p>
         <div className='btn-group pushbot-recent-actions'>
           <Role name='quote pontiff'>
-            <button className='btn btn-primary' disabled={disable}>Quote</button>
+            <button className='btn btn-primary' disabled={disable} onClick={this.didSubmitQuote}>
+              Quote
+            </button>
           </Role>
           <Role name='poet laureate'>
-            <button className='btn btn-primary' disabled={disable}>Limerick</button>
+            <button className='btn btn-primary' disabled={disable} onClick={this.didSubmitLim}>
+              Limerick
+            </button>
           </Role>
         </div>
       </div>
@@ -292,6 +300,30 @@ class ActionBar extends Component {
 
   didClear () {
     this.props.selection.clear()
+  }
+
+  submit (set) {
+    if (!this.props.channel) return
+
+    const mutation = graphql`
+      mutation RecentSubmitMutation($set: String!, $channel: String!, $lines: [ID!]!) {
+        createDocument(set: $set, channel: $channel, lines: $lines) {
+          id
+        }
+      }
+    `
+
+    const variables = {
+      set,
+      channel: this.props.channel,
+      lines: this.props.selection.getLineIDs()
+    }
+
+    commitMutation(this.props.environment, {
+      mutation,
+      variables,
+      onCompleted: () => this.props.selection.clear()
+    })
   }
 }
 
@@ -454,7 +486,11 @@ export default class Recent extends Component {
           </button>
         </form>
         <History lines={history} selection={this.state.selection} />
-        <ActionBar selection={this.state.selection} />
+        <ActionBar
+          environment={this.state.environment}
+          channel={this.state.currentChannel}
+          selection={this.state.selection}
+        />
       </div>
     )
   }

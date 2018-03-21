@@ -5,6 +5,8 @@ import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 import {getEnvironment} from './Transport'
 
+import './Events.css'
+
 class FeedForm extends React.Component {
   static propTypes = {
     ready: PropTypes.bool.isRequired,
@@ -24,7 +26,7 @@ class FeedForm extends React.Component {
 
     return (
       <p className='form-inline'>
-        <input type='text' className='form-control' value={this.props.feedURL} readOnly />
+        <input type='text' id='pushbot-events-feedurl' className='form-control' value={this.props.feedURL} readOnly />
         <CopyToClipboard text={this.props.feedURL} onCopy={() => this.setState({copied: true})}>
           <button className={btnClass} disabled={!this.props.ready}>{btnMessage}</button>
         </CopyToClipboard>

@@ -81,7 +81,7 @@ export default class Events extends React.Component {
     return (
       <div>
         <p>
-          Keep up with #~s events planned in the <code>#events</code> channel with an iCal feed.
+          Keep up with #~s events planned in the <code>#events</code> channel with your own, personal iCal feed.
         </p>
         <FeedForm ready={ready} feedURL={feedURL} />
         <p>

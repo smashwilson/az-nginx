@@ -5,6 +5,7 @@ import SideNav from './SideNav.js'
 import Dashboard from './Dashboard.js'
 import People from './People.js'
 import Quotes from './Quotes.js'
+import Events from './Events.js'
 import Recent from './Recent.js'
 
 import {UserPropType} from './Role'
@@ -33,6 +34,7 @@ export default class Authenticated extends Component {
             <Route path='/' component={Dashboard} exact />
             <Route path='/people' component={People} />
             <Route path='/quotes' component={Quotes} />
+            <Route path='/events' component={Events} />
             <Route path='/recent' component={Recent} />
           </div>
         </div>

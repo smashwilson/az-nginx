@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "emoji-js": "^3.4.0",
     "graphql": "^0.10.3",
     "moment": "^2.21.0",
     "prop-types": "^15.5.10",

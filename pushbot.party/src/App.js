@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 import {getEnvironment, AUTH_URL} from './Transport'
 import Banner from './Banner'
@@ -79,16 +80,18 @@ export default class App extends Component {
       props.users.me.avatar.image48
 
     return (
-      <div className='container-fluid'>
-        <div className='row'>
-          <Banner
-            username={username}
-            title={title}
-            avatar={avatar}
-          />
+      <Router>
+        <div className='container-fluid'>
+          <div className='row'>
+            <Banner
+              username={username}
+              title={title}
+              avatar={avatar}
+            />
+          </div>
+          {body}
         </div>
-        {body}
-      </div>
+      </Router>
     )
   }
 }

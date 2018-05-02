@@ -1,0 +1,56 @@
+.ct-chart .emoji, .ct-chart .emoji-sizer {
+  font-size: 160%;
+}
+
+.ct-chart foreignObject {
+  display: inline-block;
+  text-align: center;
+}
+
+.ct-series-a .ct-bar {
+  stroke: blue;
+  stroke-width: 25px;
+}
+
+.pushbot-profile-avatar {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pushbot-profile-reaction-chart {
+  margin-top: 2em;
+}
+
+.pushbot-profile-reaction-chart h4 {
+  text-decoration: underline;
+}
+
+.pushbot-profile-username {
+  letter-spacing: 3px;
+}
+
+span.pushbot-profile-title {
+  font-variant: small-caps;
+  font-size: 105%;
+}
+
+span.pushbot-profile-title:hover {
+  color: black;
+}
+
+span.pushbot-profile-title:after {
+  content: ", ";
+}
+
+span.pushbot-profile-title:last-child:after {
+  content: ".";
+}
+
+img.pushbot-profile-title {
+  max-height: 200px;
+  margin: auto;
+}
+
+.pushbot-profile-quoterank {
+  font-style: italic;
+}

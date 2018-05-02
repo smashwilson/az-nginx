@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
+import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import {getEnvironment} from './Transport'
@@ -37,7 +38,7 @@ class Person extends Component {
         <div className='col-xs-11'>
           <p>
             <i className={`fa pushbot-status ${presenceIcon}`} aria-hidden='true' />
-            <span className='pushbot-person-name'>{name}</span>
+            <Link to={`/people/${name}`} className='pushbot-person-name'>{name}</Link>
             <span className='pushbot-person-title'>{this.props.title}</span>
           </p>
           <p className='pushbot-person-status-message'>{message}</p>

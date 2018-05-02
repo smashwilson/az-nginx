@@ -1,6 +1,7 @@
 /* global API_BASE_URL */
 
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import './Banner.css'
@@ -28,9 +29,9 @@ export default class Banner extends Component {
         )
       }
       accountElements.push(
-        <span key='2' className='pushbot-navbar-username'>
+        <Link to={`/people/${this.props.username}`} key='2' className='pushbot-navbar-username'>
           @{this.props.username}
-        </span>
+        </Link>
       )
 
       accountControl = (

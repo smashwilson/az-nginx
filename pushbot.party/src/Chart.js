@@ -20,7 +20,7 @@ export default class Chart extends Component {
   }
 
   render () {
-    return <div ref={c => { this.refElement = c }} />
+    return <div className='ct-chart ct-golden-section' ref={c => { this.refElement = c }} />
   }
 
   componentDidMount () {
@@ -31,6 +31,6 @@ export default class Chart extends Component {
   }
 
   componentWillUnmount () {
-    this.chart && this.chart.destroy()
+    //
   }
 }

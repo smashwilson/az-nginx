@@ -2,10 +2,12 @@
 
 import os
 import io
+import struct
 import sys
 import pathlib
 import tarfile
 import boto3
+from Crypto.Cipher import AES
 
 required_tls_files = [
     '/etc/ssl/pushbot.party/fullchain.pem',
@@ -32,11 +34,27 @@ ciphertext = io.BytesIO()
 s3.Bucket(bucket_name).download_fileobj('tls-certificates.tar.enc', ciphertext)
 
 print('Decrypting tarball.')
-response = kms.decrypt(CiphertextBlob=ciphertext.getvalue())
-ciphertext.close()
-tarball = io.BytesIO(response['Plaintext'])
+
+version = struct.unpack('>L', ciphertext.peek(4))
+tarball = io.BytesIO()
+if version == 0:
+    ciphertext.read(4)  # Skip version header we already read
+
+    data_key_len = struct.unpack('>L', ciphertext.read(4))
+    data_key_enc = ciphertext.read(data_key_len)
+    iv = ciphertext.read(AES.block_size)
+
+    data_key = kms.decrypt(CiphertextBlob=data_key_enc).get('Plaintext')
+
+    aes = AES.new(data_key, AES.MODE_CBC, iv)
+    tarball.write(aes.decrypt(ciphertext.read()))
+else:
+    response = kms.decrypt(CiphertextBlob=ciphertext.getvalue())
+    ciphertext.close()
+    tarball.write(response['Plaintext'])
 
 print('Unpacking tarball.')
+tarball.seek(0)
 with tarfile.open(name='tls-certificates.tar.gz', fileobj=tarball, mode='r') as tf:
     tf.extractall(path='/etc/ssl/')
 

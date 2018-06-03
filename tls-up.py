@@ -35,12 +35,11 @@ s3.Bucket(bucket_name).download_fileobj('tls-certificates.tar.enc', ciphertext)
 
 print('Decrypting tarball.')
 
-version = struct.unpack('>L', ciphertext.peek(4))
+ciphertext.seek(0)
+version, = struct.unpack('>L', ciphertext.read(4))
 tarball = io.BytesIO()
 if version == 0:
-    ciphertext.read(4)  # Skip version header we already read
-
-    data_key_len = struct.unpack('>L', ciphertext.read(4))
+    data_key_len, = struct.unpack('>L', ciphertext.read(4))
     data_key_enc = ciphertext.read(data_key_len)
     iv = ciphertext.read(AES.block_size)
 
@@ -49,6 +48,7 @@ if version == 0:
     aes = AES.new(data_key, AES.MODE_CBC, iv)
     tarball.write(aes.decrypt(ciphertext.read()))
 else:
+    ciphertext.seek(0)
     response = kms.decrypt(CiphertextBlob=ciphertext.getvalue())
     ciphertext.close()
     tarball.write(response['Plaintext'])

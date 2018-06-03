@@ -7,7 +7,7 @@ import sys
 import pathlib
 import tarfile
 import boto3
-from Crypto.Hash import AES
+from Crypto.Cipher import AES
 
 required_tls_files = [
     '/etc/ssl/pushbot.party/fullchain.pem',

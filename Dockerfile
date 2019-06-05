@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.9
 LABEL maintainer "Ash Wilson"
 
 RUN apk add --no-cache nginx python3 gcc g++ make libffi-dev openssl-dev python3-dev

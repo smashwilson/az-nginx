@@ -1,4 +1,4 @@
-FROM alpine:3.13.4
+FROM alpine:3.13.5
 LABEL maintainer "Ash Wilson"
 
 RUN apk add --no-cache nginx
